@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  webserver:
+    image: nginx:alpine
+    container_name: nginx_webserver
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - web-network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: dplchk2-php:8.2
+    container_name: php_backend
+    environment:
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_NAME: ${DB_NAME:-db_DPLChk2}
+      DB_USER: ${DB_USER:-user}
+      DB_PASSWORD: ${DB_PASSWORD:-user}
+      DB_PORT: ${DB_PORT:-3306}
+      RULES_DIR: /var/www/rules
+      DATA_DIR: /var/www/data
+      PLAN_FILE: dienstplan_test.json
+      PYTHON_BIN: python3
+      RULE_TIMEOUT: ${RULE_TIMEOUT:-10}
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./html:/usr/share/nginx/html
+      - ./php:/var/www/php:ro
+      - ./rules:/var/www/rules:ro
+      - ./data:/var/www/data:ro
+    networks:
+      - web-network
+
+  mysql:
+    image: mysql:8.0 # Verwenden Sie am besten eine feste Version wie 8.0 statt latest
+    container_name: mysql_database
+    restart: always
+    ports:
+      - "3306:3306" # Macht MySQL unter Windows über localhost:3306 erreichbar
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_TestKs
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - web-network
+
+  # HIER ERGÄNZT: phpMyAdmin auf Port 8085 im selben Netzwerk
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_web
+    restart: always
+    ports:
+      - "8085:80" # Läuft auf Port 8085, um nicht mit Nginx (8080) zu kollidieren
+    environment:
+      PMA_HOST: mysql # Nutzt den Servicenamen der MySQL-Datenbank von oben
+    networks:
+      - web-network
+    depends_on:
+      - mysql
+
+volumes:
+  db_data: # Sichert Ihre MySQL-Daten auf der Festplatte
+
+networks:
+  web-network:
+    driver: bridge

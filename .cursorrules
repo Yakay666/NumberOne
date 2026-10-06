@@ -1,0 +1,32 @@
+# Mein Projekt-Kontext (Bitte immer beachten!)
+
+Hi Cursor! Ich arbeite an einem größeren Projekt und du bist mein Co-Entwickler. Damit wir uns über die nächsten Wochen ohne Missverständnisse verstehen, hier die festen Spielregeln für unser Setup:
+# Mein Projekt-Kontext (Bitte immer beachten!)
+
+Hi Cursor! Ich arbeite an einem größeren Projekt und du bist mein Co-Entwickler. Damit wir uns über die nächsten Wochen ohne Missverständnisse verstehen, hier die festen Spielregeln für unser Setup:
+
+## 1. Unser System (Tech-Stack)
+- **Entwicklung:** Windows 11 mit Docker Desktop.
+- **Produktion (Später):** Echter Linux-Webserver (ebenfalls mit Nginx).
+- **Webserver:** Nginx (Lokal erreichbar unter http://localhost:8080).
+- **Backend-Sprachen:** PHP 8.2 und Python 3.11.
+- **Datenbank:** MySQL 8.0 (Lokal erreichbar über phpMyAdmin unter http://localhost:8085).
+- **Netzwerk:** Alle unsere Docker-Container laufen im selben Netzwerk namens `web-network`.
+
+## 2. WICHTIG: Produktion & Umzug einplanen (Environment Variables)
+- Schreibe Code, der sich mit der Datenbank verbindet, **niemals** mit fest eingetragenen Passwörtern oder Hostnames (kein Hardcoding!).
+- Nutze in PHP stattdessen immer `getenv()` oder `$_ENV`, und in Python `os.environ.get()`.
+- Wenn du mir Code vorschlägst, zeige mir dazu auch die passenden Einträge für eine `.env`-Datei.
+- **Für die lokale Entwicklung** gelten diese Standardwerte, falls keine Umgebungsvariablen gefunden werden:
+  - DB-Host: `mysql` (Wichtig: Auf dem Produktivserver wird das später anders sein, deshalb muss es dynamisch sein!)
+  - Datenbankname: `db_DPLChk2`
+  - Benutzer für Skripte: `user` / Passwort: `user`
+
+## 3. Wie du mir antworten und helfen sollst
+- **Sprache:** Antworte mir bitte immer auf Deutsch.
+- **Keine halben Sachen:** Wenn du Code änderst, zeig mir am besten den ganzen Code-Block, damit ich weiß, wo ich ihn hinkopieren muss. Halte die Erklärungen dazu kurz und knackig.
+- **Nichts ungefragt ändern:** Verändere funktionierenden Code nicht einfach so. Mach Refactorings nur, wenn ich dich darum bitte.
+- **Docker-Pfade beachten:** Unser PHP-Code liegt lokal im Container unter `/usr/share/nginx/html`.
+
+## 4. Datenbank-Richtlinien
+- In PHP nutzen wir für Datenbank-Abfragen ausnahmslos **PDO** (kein normales mysqli).

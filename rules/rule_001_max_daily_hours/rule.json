@@ -1,0 +1,6 @@
+{
+  "id": "rule_001_max_daily_hours",
+  "name": "Höchstarbeitszeit",
+  "description": "Prüft, ob ein Dienst die tägliche Höchstarbeitszeit von 10 Stunden überschreitet",
+  "category": "Arbeitszeit"
+}
