@@ -24,8 +24,8 @@ services:
     environment:
       DB_HOST: ${DB_HOST:-mysql}
       DB_NAME: ${DB_NAME:-db_DPLChk2}
-      DB_USER: ${DB_USER:-user}
-      DB_PASSWORD: ${DB_PASSWORD:-user}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_PORT: ${DB_PORT:-3306}
       RULES_DIR: /var/www/rules
       DATA_DIR: /var/www/data
@@ -48,10 +48,10 @@ services:
     ports:
       - "3306:3306" # Macht MySQL unter Windows über localhost:3306 erreichbar
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: db_TestKs
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-db_TestKs}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
