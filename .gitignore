@@ -1,5 +1,12 @@
-node_modules/
+# Secrets — lokal halten
 .env
-.env.example
+.env.*
+!.env.example
+
+# Sonstiges
+node_modules/
 .DS_Store
 dist/
+__pycache__/
+*.pyc
+.venv/
